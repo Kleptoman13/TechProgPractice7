@@ -4,8 +4,18 @@
     {
         static void Main(string[] args)
         {
-            Comments comments = new Comments();
+            string jsonPath = "comments.json";
+            string binPath = "comments.bin";
+
+            Comments comments = SaveLoad.LoadJson(jsonPath);
+            Comments comments2 = SaveLoad.BinLoad(binPath);
+            Console.WriteLine("From json file");
             Console.WriteLine(comments);
+            Console.WriteLine("From binary file");
+            Console.WriteLine(comments2);
+
+
+
             int act;
 
             bool correct = false;
@@ -22,7 +32,10 @@
                         if (comment is not null && comment.Length != 0)
                         {
                             comments.AddComment(comment);
+                            SaveLoad.SaveJson(jsonPath, comments.GetAllComments());
+                            SaveLoad.SaveBin(binPath, comments.GetAllComments());
                             Console.WriteLine(comments);
+
                         } else
                         {
                             Console.WriteLine("Вы не можете добавлять пустой комментарий");
@@ -50,6 +63,8 @@
                                     else
                                     {
                                         comments.RemoveComment(index);
+                                        SaveLoad.SaveJson(jsonPath, comments.GetAllComments());
+                                        SaveLoad.SaveBin(binPath, comments.GetAllComments());
                                         Console.WriteLine(comments);
                                         correctIndex = true;
                                     }
@@ -75,6 +90,7 @@
                     correct = false;
                 }
             }
+
         }
     }
 }
